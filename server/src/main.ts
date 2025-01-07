@@ -1,7 +1,5 @@
 // Load environment variables from .env file
 import "dotenv/config";
-import type { RequestHandler } from "express";
-
 
 // Check database connection
 // Note: This is optional and can be removed if the database connection
@@ -22,11 +20,3 @@ app
   .on("error", (err: Error) => {
     console.error("Error:", err.message);
   });
-
-  // Déclaration des routes
-
-  const sayWelcome: RequestHandler = (req, res) => {
-  res.send("Welcome to Wild Series !");
-};
-
-app.get("/", sayWelcome);
