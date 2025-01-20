@@ -46,6 +46,61 @@ const read: RequestHandler = (req, res) => {
   }
 };
 
+const edit: RequestHandler = async (req, res, next) => {
+  try {
+    // Update a specific program based on the provided ID
+    const program = {
+      id: Number(req.params.id),
+      name: req.body.name,
+    };
+
+    const affectedRows = await programRepository.update(program);
+
+    // If the program is not found, respond with HTTP 404 (Not Found)
+    // Otherwise, respond with the program in JSON format
+    if (affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+const add: RequestHandler = async (req, res, next) => {
+  try {
+    // Extract the program data from the request body
+    const newProgram = {
+      name: req.body.name,
+    };
+
+    // Create the program
+    const insertId = await programRepository.create(newProgram);
+
+    // Respond with HTTP 201 (Created) and the ID of the newly inserted item
+    res.status(201).json({ insertId });
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+const destroy: RequestHandler = async (req, res, next) => {
+  try {
+    // Delete a specific program based on the provided ID
+    const programId = Number(req.params.id);
+
+    await programRepository.delete(programId);
+
+    // Respond with HTTP 204 (No Content) anyway
+    res.sendStatus(204);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
 // Export them to import them somewhere else
 
-export default { browse, read };
+export default { browse, read, edit, add, destroy };
