@@ -4,14 +4,19 @@ import type { Result, Rows } from "../../../database/client";
 
 type Program = {
   id: number;
-  name: string;
+  title: string;
+  synopsis: string;
+  poster: string;
+  country: string;
+  year: number;
+  category_id: number;
 };
 
 class ProgramRepository {
   async create(program: Omit<Program, "id">) {
     const [result] = await databaseClient.query<Result>(
-      "insert into program (name) values (?)",
-      [program.name],
+      "insert into program (title , synopsis , poster , country , year , category_id) values (? , ? , ? , ? , ? , ?)",
+      [program.title , program.synopsis , program.poster , program.country , program.year , program.category_id],
     );
     return result.insertId;
   }
@@ -23,8 +28,8 @@ class ProgramRepository {
 
   async update(program: Program) {
     const [result] = await databaseClient.query<Result>(
-      "update program set name = ? where id = ?",
-      [program.name, program.id],
+      "update program set title = ? , synopsis = ? , poster = ? , country = ? , year = ? , category_id = ? where id = ?",
+      [program.title, program.synopsis , program.poster , program.country , program.year , program.category_id , program.id],
     );
     return result.affectedRows;
   }

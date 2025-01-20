@@ -51,7 +51,12 @@ const edit: RequestHandler = async (req, res, next) => {
     // Update a specific program based on the provided ID
     const program = {
       id: Number(req.params.id),
-      name: req.body.name,
+      title: req.body.title,
+      synopsis: req.body.synopsis,
+      poster: req.body.poster,
+      country: req.body.country,
+      year: req.body.year,
+      category_id: req.body.category_id,
     };
 
     const affectedRows = await programRepository.update(program);
@@ -72,7 +77,12 @@ const add: RequestHandler = async (req, res, next) => {
   try {
     // Extract the program data from the request body
     const newProgram = {
-      name: req.body.name,
+      title: req.body.title,
+      synopsis: req.body.synopsis,
+      poster: req.body.poster,
+      country: req.body.country,
+      year: req.body.year,
+      category_id: req.body.category_id,
     };
 
     // Create the program
